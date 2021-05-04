@@ -201,27 +201,81 @@ int insert(Node* head, int key)			// 입력한 노드 값을 삽입하는 함수
 
 }
 
-
-int deleteLeafNode(Node* head, int key)
+int deleteLeafNode(Node* head, int key)			// head 노드부터 탐색하여 입력한 키와 같은 노드를 삭제하는 함수
 {
+	Node* parent, *p, *succ, *succ_parent;
+	Node* child;
+	parent = NULL;
+	p = head->left;
 
+	while((p != NULL)&&(p-> key != key )){		// 삭제할 노드의 위치 탐색
+		parent = p;
+		if(key < p->key)
+			p = p->left;
+		else p = p -> right;
+	}
+	if(p == NULL ){								// 삭제할 노드가 없을 경우
+		printf("찾는 키가 없습니다");
+		return 0;
+	}
+
+	if((p->left == NULL) && (p-> right == NULL)){	// 삭제한 노드가 leap 노드인 경우
+		if(parent != NULL){
+			if(parent -> left == p)
+				parent->left = NULL;
+			else parent -> right = NULL;
+		}
+
+		else head = NULL;
+	}
+
+	else if((p->left== NULL) || (p->right == NULL)){	// 삭제할 노드가 자식 노드를 한 개 가지고 있는 경우
+		if(p->left != NULL)								// 삭제할 노드가 왼쪽 자식 노드를 가지고 있다면
+			child = p -> left;							// 물려주기 위해 왼쪽 자식 노드에 child로 설정
+		else child = p -> right;						// 물려주기 위해 오른쪽 자식 노드에 child로 설정
+
+		if (parent != NULL){
+			if (parent -> left == p)
+				parent -> left = child;					// 삭제할 노드의 부모 노드와 자식 노드를 연결한다.
+			else parent -> right = child;
+		}
+		else head = child;
+	}
+
+	else{												// 삭제할 노드가 자식 노드를 두 개 가지고 있는 경우
+		succ_parent = p;
+		succ = p -> left;
+		while(succ->right != NULL){						// 왼쪽 서브 트리에서 오른쪽 링크로 이동
+			succ_parent = succ;							// 가장 큰 노드를 찾아 succ로 지정한다.
+			succ = succ -> right;
+		}
+		if(succ_parent -> left == succ)
+			succ_parent -> left = succ -> left;			// succ의 왼쪽 노드를 부모 왼쪽 노드에 연결한다.
+		else
+		 succ_parent -> right = succ -> left;			// succ의 왼쪽 노드를 부모 오른쪽 노드에 연결한다.
+		p->key = succ->key;								// succ의 값을 p 값으로 옮겨준다
+		p = succ;
+	}
+	free(p);
 }
 
 Node* searchRecursive(Node* ptr, int key)
 {
-
+	
 }
 
 Node* searchIterative(Node* head, int key)
 {
-
+	
 }
 
 
 int freeBST(Node* head)
 {
-
+	
 }
+
+
 
 
 
