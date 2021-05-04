@@ -38,7 +38,7 @@ int main()
 	int key;
 	Node* head = NULL;
 	Node* ptr = NULL;	/* temp */
-
+		printf("\t[-----[이 명 국]  [2017038100]-----]\n");
 	do{
 		printf("\n\n");
 		printf("----------------------------------------------------------------\n");
@@ -259,20 +259,38 @@ int deleteLeafNode(Node* head, int key)			// head 노드부터 탐색하여 입력한 키와 
 	free(p);
 }
 
-Node* searchRecursive(Node* ptr, int key)
+Node* searchRecursive(Node* ptr, int key)			// 순환을 통한 입력한 키와 같은 노드의 주소 호출 함수
 {
-	
+	if(ptr == NULL) return NULL;					// 찾고자하는 노드가 없을경우( ptr이 NULL 경우 NULL 출력)
+
+	if(key == ptr->key) return ptr;					// 입력한 값을 찾았을 경우 ptr를 리턴한다
+
+	if(key < ptr->key){								// 입력한 값이 ptr의 값보다 작을 경우 왼쪽 노드로 이동
+		return searchRecursive(ptr->left,key);
+	}	
+	else{											// 입력한 값이 ptr의 값보다 작을 경우 오른쪽 노드로 이동
+		return searchRecursive(ptr->right,key);
+	}							
 }
 
-Node* searchIterative(Node* head, int key)
+Node* searchIterative(Node* head, int key)			// 반복을 통한 입력한 키와 같은 노드의 주소 호출 함수
 {
-	
+	Node* h;
+	h = head->left;									// root 노드를 h로 지정
+	while(h != NULL){
+		if(key < h->key) h = h -> left;				// 입력한 키의 값이 h의 값보다 작을 경우 왼쪽 노드로 이동
+		else if (key == h->key) return h;			// 키의 값이 같을 경우 h 리턴
+		else h = h->right;							// 입력한 키의 값이 h의 값보다 클 경우 오른쪽 노드로 이동
+	}
+	return h;										// h 리턴
 }
 
 
 int freeBST(Node* head)
 {
-	
+	Node* h;
+	h = head -> left;
+	free(h);				// 할당된 헤드노드 메모리 해제
 }
 
 
